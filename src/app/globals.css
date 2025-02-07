@@ -1,0 +1,293 @@
+@import "tailwindcss";
+
+
+:root {
+  /* 主色调 - 炫彩蓝 */
+  --primary-50: #e6f9ff;
+  --primary-100: #b3edff;
+  --primary-200: #80e1ff;
+  --primary-300: #4dd5ff;
+  --primary-400: #1ac9ff;
+  --primary-500: #00b8ff;
+  --primary-600: #009ce6;
+  --primary-700: #0080cc;
+  --primary-800: #0064b3;
+  --primary-900: #004899;
+  --primary-950: #003380;
+
+  /* 强调色 - 霓虹紫 */
+  --accent-50: #f9f0ff;
+  --accent-100: #ecd5ff;
+  --accent-200: #dfbaff;
+  --accent-300: #d29fff;
+  --accent-400: #c584ff;
+  --accent-500: #b85aff;
+  --accent-600: #a142ff;
+  --accent-700: #8a29ff;
+  --accent-800: #7310ff;
+  --accent-900: #5c00f5;
+  --accent-950: #4600cc;
+
+  /* 成功色 - 荧光绿 */
+  --success-50: #eefff4;
+  --success-100: #d4ffe4;
+  --success-200: #a1ffca;
+  --success-300: #6effaf;
+  --success-400: #3bff94;
+  --success-500: #07ff79;
+  --success-600: #00e665;
+  --success-700: #00cc59;
+  --success-800: #00b34d;
+  --success-900: #009941;
+  --success-950: #008035;
+
+  /* 警告色 - 明亮黄 */
+  --warning-50: #fff9e6;
+  --warning-100: #fff0b3;
+  --warning-200: #ffe680;
+  --warning-300: #ffdd4d;
+  --warning-400: #ffd41a;
+  --warning-500: #ffcc00;
+  --warning-600: #e6b800;
+  --warning-700: #cca300;
+  --warning-800: #b38f00;
+  --warning-900: #997a00;
+  --warning-950: #806600;
+
+  /* 错误色 - 霓虹红 */
+  --error-50: #fff0f0;
+  --error-100: #ffe0e0;
+  --error-200: #ffc7c7;
+  --error-300: #ffa3a3;
+  --error-400: #ff7a7a;
+  --error-500: #ff4747;
+  --error-600: #ff1414;
+  --error-700: #e60000;
+  --error-800: #cc0000;
+  --error-900: #b30000;
+  --error-950: #990000;
+
+  /* 背景效果 */
+  --grid-color: rgba(0, 184, 255, 0.1);
+  --glow-primary: rgba(0, 184, 255, 0.5);
+  --glow-accent: rgba(184, 90, 255, 0.5);
+  
+  /* 渐变色 - 使用 rgba 值 */
+  --gradient-primary: linear-gradient(135deg, rgba(0, 184, 255, 1), rgba(184, 90, 255, 1));
+  --gradient-secondary: linear-gradient(135deg, rgba(184, 90, 255, 1), rgba(0, 184, 255, 1));
+  --gradient-success: linear-gradient(135deg, rgba(7, 255, 121, 1), rgba(0, 184, 255, 1));
+  --gradient-warning: linear-gradient(135deg, rgba(255, 204, 0, 1), rgba(255, 71, 71, 1));
+  --gradient-error: linear-gradient(135deg, rgba(255, 71, 71, 1), rgba(184, 90, 255, 1));
+  
+  /* 玻璃态效果 */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  
+  /* 背景色 */
+  --bg-light: #ffffff;
+  --bg-dark: #0a0a0a;
+  --bg-gradient: linear-gradient(135deg, var(--bg-light), #f5f5f5);
+  --bg-gradient-dark: linear-gradient(135deg, var(--bg-dark), #1a1a1a);
+  
+  /* 文字色 */
+  --text-light: #171717;
+  --text-dark: #ededed;
+  --text-muted: #666666;
+  --text-muted-dark: #999999;
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: var(--bg-dark);
+    --text-primary: var(--text-dark);
+    --glass-bg: rgba(0, 0, 0, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 全局样式 */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 135, 255, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 135, 255, 0.3);
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-500);
+  color: var(--primary-500);
+}
+
+/* 卡片样式 */
+.card {
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--glass-shadow);
+  transition: all 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-500);
+}
+
+/* 渐变文字 */
+.gradient-text {
+  font-weight: bold;
+  background: var(--gradient-primary);
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* 玻璃态效果 */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 使用普通的 CSS 类定义替代 @apply */
+.hero-button {
+  padding: 1.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.hero-button-primary {
+  background-color: var(--primary-600);
+  color: white;
+}
+.hero-button-primary:hover {
+  background-color: var(--primary-700);
+}
+
+.hero-button-secondary {
+  border: 2px solid var(--primary-600);
+  color: var(--primary-600);
+}
+.hero-button-secondary:hover {
+  background-color: var(--primary-50);
+}
+
+.feature-card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+.feature-card:hover {
+  border-color: var(--primary-300);
+}
+
+/* 添加网格背景图案 */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, #666 1px, transparent 1px),
+    linear-gradient(to bottom, #666 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 添加滚动条样式 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-500);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-600);
+}
+
+/* 添加平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 添加选择文本样式 */
+::selection {
+  background: var(--primary-500);
+  color: white;
+}
+
+/* 3D 效果支持 */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* 隐藏滚动条但保持功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 移动端优化 */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .text-7xl {
+    font-size: 3rem;
+  }
+  
+  .gap-12 {
+    gap: 1.5rem;
+  }
+}
+
+/* 加载动画背景模糊 */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/* 3D 卡片悬浮效果 */
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
