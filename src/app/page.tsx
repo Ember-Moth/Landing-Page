@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // 移除 AnimatePresence
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -25,40 +25,57 @@ type SectionType = 'hero' | 'features' | 'download' | 'pricing' | 'faqs';
 export default function Home() {
   const [currentSection, setCurrentSection] = useState<SectionType>('hero');
 
-  const renderSection = () => {
-    switch (currentSection) {
-      case 'hero':
-        return <Hero />;
-      case 'features':
-        return <Features />;
-      case 'download':
-        return <Download />;
-      case 'pricing':
-        return <Pricing />;
-      case 'faqs':
-        return <FAQs />;
-      default:
-        return <Hero />;
-    }
-  };
-
   return (
     <>
       <Header setCurrentSection={setCurrentSection} currentSection={currentSection} />
       <main className="relative min-h-screen">
         <BackgroundAnimation />
         <FloatingElements />
-        <AnimatePresence mode="wait" initial={false}> {/* 添加 initial={false} */}
+        {/* Hero 始终挂载，使用 opacity 和 position 控制 */}
+        <motion.div
+          animate={{ opacity: currentSection === 'hero' ? 1 : 0 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          style={{ position: currentSection === 'hero' ? 'relative' : 'absolute', top: 0, left: 0, width: '100%' }}
+        >
+          <Hero />
+        </motion.div>
+        {/* 其他组件按需渲染 */}
+        {currentSection === 'features' && (
           <motion.div
-            key={currentSection}
-            initial={{ opacity: 0, y: 10 }} // 减小 y 值
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }} // 减小 y 值
-            transition={{ duration: 0.2, ease: 'easeInOut' }} // 缩短 duration
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
           >
-            {renderSection()}
+            <Features />
           </motion.div>
-        </AnimatePresence>
+        )}
+        {currentSection === 'download' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            <Download />
+          </motion.div>
+        )}
+        {currentSection === 'pricing' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            <Pricing />
+          </motion.div>
+        )}
+        {currentSection === 'faqs' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            <FAQs />
+          </motion.div>
+        )}
       </main>
       <Footer />
     </>
