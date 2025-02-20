@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion'; // 移除 AnimatePresence
+import { motion } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -31,7 +31,7 @@ export default function Home() {
       <main className="relative min-h-screen">
         <BackgroundAnimation />
         <FloatingElements />
-        {/* Hero 始终挂载，使用 opacity 和 position 控制 */}
+        {/* Hero 始终挂载 */}
         <motion.div
           animate={{ opacity: currentSection === 'hero' ? 1 : 0 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
