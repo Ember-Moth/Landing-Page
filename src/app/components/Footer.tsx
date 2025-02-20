@@ -2,17 +2,43 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Icon } from '@iconify/react';
+
+// 📝 配置部分
+const PROJECT_NAME = 'AeroIsle';
+
+const CONTACTS = [
+  { name: 'Email', icon: 'carbon:email', url: 'mailto:support@aeroisle.com' },
+  { name: 'Telegram', icon: 'logos:telegram', url: 'https://t.me/yourtelegram' },
+  { name: 'Twitter', icon: 'logos:twitter', url: 'https://twitter.com/yourtwitter' },
+  { name: 'GitHub', icon: 'logos:github-icon', url: 'https://github.com/yourgithub' },
+];
 
 export default function Footer() {
   return (
     <footer className="bg-[#1A1A1A] text-[#D9D9D9] py-4 border-t border-gray-800">
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-        {/* 版权和公司信息 */}
+        {/* 版权信息 */}
         <div className="text-sm text-center md:text-left">
-          <p>© 2025 AeroIsle 保留所有权利。</p>
-          <p className="mt-1">
-            Surfshark B.V., KVK number: 81967985, 地址：Kabelweg 57, 1014BA Amsterdam, the Netherlands, VAT #: NL862287339B01
-          </p>
+          <p>© 2025 {PROJECT_NAME} 保留所有权利。</p>
+        </div>
+
+        {/* 联系方式图标 */}
+        <div className="flex items-center space-x-4 mt-4 md:mt-0">
+          {CONTACTS.map((contact) => (
+            <motion.a
+              key={contact.name}
+              href={contact.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              className="text-[#D9D9D9] hover:text-primary-400 transition-colors duration-300"
+              aria-label={contact.name}
+            >
+              <Icon icon={contact.icon} className="w-6 h-6" />
+            </motion.a>
+          ))}
         </div>
 
         {/* 链接按钮 */}
