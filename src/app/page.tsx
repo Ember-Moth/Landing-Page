@@ -7,7 +7,7 @@ import Hero from './components/Hero';
 import Features from './components/Features';
 import Download from './components/Download';
 import Pricing from './components/Pricing';
-import FAQs from './components/FAQs'; // 新增导入
+import FAQs from './components/FAQs';
 import Footer from './components/Footer';
 import dynamic from 'next/dynamic';
 
@@ -20,12 +20,11 @@ const FloatingElements = dynamic(
   { ssr: false }
 );
 
-type SectionType = 'hero' | 'features' | 'download' | 'pricing' | 'faqs'; // 添加 'faqs'
+type SectionType = 'hero' | 'features' | 'download' | 'pricing' | 'faqs';
 
 export default function Home() {
   const [currentSection, setCurrentSection] = useState<SectionType>('hero');
 
-  // 渲染当前组件
   const renderSection = () => {
     switch (currentSection) {
       case 'hero':
@@ -36,7 +35,7 @@ export default function Home() {
         return <Download />;
       case 'pricing':
         return <Pricing />;
-      case 'faqs': // 新增 faqs 情况
+      case 'faqs':
         return <FAQs />;
       default:
         return <Hero />;
@@ -49,13 +48,13 @@ export default function Home() {
       <main className="relative min-h-screen">
         <BackgroundAnimation />
         <FloatingElements />
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}> {/* 添加 initial={false} */}
           <motion.div
             key={currentSection}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }} // 减小 y 值
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            exit={{ opacity: 0, y: -10 }} // 减小 y 值
+            transition={{ duration: 0.2, ease: 'easeInOut' }} // 缩短 duration
           >
             {renderSection()}
           </motion.div>
