@@ -23,6 +23,11 @@ const menuItems = [
   },
 ];
 
+const authItems = [
+  { name: '登录', icon: 'carbon:login', href: '/login' },
+  { name: '注册', icon: 'carbon:user', href: '/register' },
+];
+
 const menuVariants = {
   hidden: { opacity: 0, y: -10 },
   visible: (i: number) => ({
@@ -91,63 +96,83 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-background-900/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          isScrolled ? 'bg-background-900/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-              >
-                <Icon icon="logos:meta-icon" className="w-8 h-8 text-primary-400" />
-              </motion.div>
-              <span className="text-xl font-bold text-foreground-100">Meta EMMUi</span>
-            </Link>
+            {/* Logo 和导航项 */}
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-2">
+                <motion.div
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                >
+                  <Icon icon="logos:meta-icon" className="w-8 h-8 text-primary-400" />
+                </motion.div>
+                <span className="text-xl font-bold text-foreground-100">Meta EMMUi</span>
+              </Link>
 
-            {/* 桌面端导航 */}
+              {/* 桌面端导航项 */}
+              <div className="hidden md:flex items-center space-x-8">
+                {menuItems.map((item, i) => (
+                  <motion.div
+                    key={item.name}
+                    custom={i}
+                    variants={menuVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <button
+                      aria-label={`跳转到${item.name}`}
+                      onClick={() => scrollToSection(item.section)}
+                      className={`group flex items-center space-x-2 transition-all duration-300 ${
+                        activeSection === item.section
+                          ? 'text-primary-400'
+                          : 'text-foreground-300 hover:text-primary-400'
+                      }`}
+                    >
+                      <Icon
+                        icon={item.icon}
+                        className={`w-5 h-5 transition-transform duration-300 ${
+                          activeSection === item.section ? 'scale-110' : 'group-hover:scale-110'
+                        }`}
+                      />
+                      <span>{item.name}</span>
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* 桌面端登录/注册按钮 */}
             <div className="hidden md:flex items-center space-x-8">
-              {menuItems.map((item, i) => (
+              {authItems.map((item, i) => (
                 <motion.div
                   key={item.name}
-                  custom={i}
+                  custom={i + menuItems.length}
                   variants={menuVariants}
                   initial="hidden"
                   animate="visible"
                 >
-                  <button
-                    aria-label={`跳转到${item.name}`}
-                    onClick={() => scrollToSection(item.section)}
-                    className={`group flex items-center space-x-2 transition-all duration-300 ${
-                      activeSection === item.section
-                        ? 'text-primary-400'
-                        : 'text-foreground-300 hover:text-primary-400'
-                    }`}
-                  >
-                    <Icon 
-                      icon={item.icon} 
-                      className={`w-5 h-5 transition-transform duration-300 ${
-                        activeSection === item.section ? 'scale-110' : 'group-hover:scale-110'
-                      }`} 
-                    />
-                    <span>{item.name}</span>
-                  </button>
+                  <Link href={item.href}>
+                    <button
+                      aria-label={item.name}
+                      className="group flex items-center space-x-2 transition-all duration-300 text-foreground-300 hover:text-primary-400"
+                    >
+                      <Icon
+                        icon={item.icon}
+                        className="w-5 h-5 transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <span>{item.name}</span>
+                    </button>
+                  </Link>
                 </motion.div>
               ))}
-
-              {/* 登录/注册按钮 */}
-              <div className="flex space-x-4">
-                <Link href="/login">
-                  <button className="text-sm text-primary-400 hover:text-primary-500">登录</button>
-                </Link>
-                <Link href="/register">
-                  <button className="text-sm text-primary-400 hover:text-primary-500">注册</button>
-                </Link>
-              </div>
             </div>
           </div>
         </nav>
@@ -187,15 +212,25 @@ export default function Header() {
                   </motion.div>
                 ))}
 
-                {/* 登录/注册按钮 */}
-                <div className="mt-4 flex flex-col space-y-4">
-                  <Link href="/login">
-                    <button className="w-full py-2 text-primary-400 hover:text-primary-500">登录</button>
-                  </Link>
-                  <Link href="/register">
-                    <button className="w-full py-2 text-primary-400 hover:text-primary-500">注册</button>
-                  </Link>
-                </div>
+                {/* 移动端登录/注册按钮 */}
+                {authItems.map((item, i) => (
+                  <motion.div
+                    key={item.name}
+                    variants={menuVariants}
+                    custom={i + menuItems.length}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <Link href={item.href}>
+                      <button
+                        className="flex items-center gap-3 w-full p-3 rounded-xl transition-all duration-300 hover:bg-white/5 text-foreground-300 hover:text-primary-400"
+                      >
+                        <Icon icon={item.icon} className="w-5 h-5" />
+                        <span>{item.name}</span>
+                      </button>
+                    </Link>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           )}
