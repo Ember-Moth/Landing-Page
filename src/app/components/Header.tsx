@@ -8,7 +8,7 @@ import { Icon } from '@iconify/react';
 interface MenuItem {
   name: string;
   icon: string;
-  section: string;
+  section: 'hero' | 'features' | 'download' | 'pricing';
 }
 
 interface AuthItem {
@@ -18,6 +18,7 @@ interface AuthItem {
 }
 
 const menuItems: MenuItem[] = [
+  { name: '首页', icon: 'carbon:home', section: 'hero' },
   { name: '功能特性', icon: 'carbon:chart-relationship', section: 'features' },
   { name: '客户端', icon: 'carbon:laptop', section: 'download' },
   { name: '价格方案', icon: 'carbon:currency-dollar', section: 'pricing' },
@@ -37,63 +38,32 @@ const menuVariants = {
   }),
 };
 
-export default function Header() {
+interface HeaderProps {
+  setCurrentSection: (section: 'hero' | 'features' | 'download' | 'pricing') => void;
+  currentSection: 'hero' | 'features' | 'download' | 'pricing';
+}
+
+export default function Header({ setCurrentSection, currentSection }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
-    setIsMobileMenuOpen(false);
-  };
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { rootMargin: '-100px 0px' }
-    );
-
-    menuItems.forEach((item) => {
-      const section = document.getElementById(item.section);
-      if (section) observer.observe(section);
-    });
-
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const NavItem = ({ name, icon, href, section, isActive, onClick, custom }: any) => (
+  const NavItem = ({ name, icon, section, isActive, onClick, custom }: any) => (
     <motion.div custom={custom} variants={menuVariants} initial="hidden" animate="visible">
-      {href ? (
-        <Link href={href} passHref>
-          <button className="group nav-item">
-            <Icon icon={icon} className="nav-icon" />
-            <span>{name}</span>
-          </button>
-        </Link>
-      ) : (
-        <button
-          onClick={() => onClick?.()}
-          className={`group nav-item ${isActive ? 'text-primary-400' : ''}`}
-        >
-          <Icon icon={icon} className={`nav-icon ${isActive ? 'scale-110' : ''}`} />
-          <span>{name}</span>
-        </button>
-      )}
+      <button
+        onClick={() => onClick?.()}
+        className={`group flex items-center space-x-2 transition-all duration-300 ${
+          isActive ? 'text-primary-400' : 'text-foreground-300 hover:text-primary-400'
+        }`}
+      >
+        <Icon icon={icon} className={`w-5 h-5 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
+        <span>{name}</span>
+      </button>
     </motion.div>
   );
 
@@ -124,21 +94,28 @@ export default function Header() {
                     name={item.name}
                     icon={item.icon}
                     section={item.section}
-                    isActive={activeSection === item.section}
-                    onClick={() => scrollToSection(item.section)}
+                    isActive={currentSection === item.section}
+                    onClick={() => setCurrentSection(item.section)}
                   />
                 ))}
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {authItems.map((item, i) => (
-                <NavItem
+                <motion.div
                   key={item.name}
                   custom={i + menuItems.length}
-                  name={item.name}
-                  icon={item.icon}
-                  href={item.href}
-                />
+                  variants={menuVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Link href={item.href}>
+                    <button className="group flex items-center space-x-2 transition-all duration-300 text-foreground-300 hover:text-primary-400">
+                      <Icon icon={item.icon} className="w-5 h-5 group-hover:scale-110" />
+                      <span>{item.name}</span>
+                    </button>
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -165,26 +142,36 @@ export default function Header() {
                     animate="visible"
                   >
                     <button
-                      onClick={() => scrollToSection(item.section)}
+                      onClick={() => {
+                        setCurrentSection(item.section);
+                        setIsMobileMenuOpen(false);
+                      }}
                       className={`flex items-center gap-3 w-full p-3 rounded-xl transition-all duration-300 ${
-                        activeSection === item.section
+                        currentSection === item.section
                           ? 'bg-primary-500/10 text-primary-400'
                           : 'hover:bg-white/5 text-foreground-300 hover:text-primary-400'
                       }`}
                     >
                       <Icon icon={item.icon} className="w-5 h-5" />
-                      <span>{name}</span>
+                      <span>{item.name}</span>
                     </button>
                   </motion.div>
                 ))}
                 {authItems.map((item, i) => (
-                  <NavItem
+                  <motion.div
                     key={item.name}
                     custom={i + menuItems.length}
-                    name={item.name}
-                    icon={item.icon}
-                    href={item.href}
-                  />
+                    variants={menuVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <Link href={item.href}>
+                      <button className="flex items-center gap-3 w-full p-3 rounded-xl transition-all duration-300 hover:bg-white/5 text-foreground-300 hover:text-primary-400">
+                        <Icon icon={item.icon} className="w-5 h-5" />
+                        <span>{item.name}</span>
+                      </button>
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
