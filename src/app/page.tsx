@@ -1,48 +1,49 @@
 'use client';
 
-import { useRef } from 'react';
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
+import { useState } from 'react';
 import Header from './components/Header';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import Download from './components/Download';
+import Pricing from './components/Pricing';
 import Footer from './components/Footer';
+import dynamic from 'next/dynamic';
 
-// 动态加载的页面区域
-const Hero = dynamic(() => import('./components/Hero')); // 首屏展示
-const Features = dynamic(() => import('./components/Features')); // 功能展示
-const Download = dynamic(() => import('./components/Download')); // 下载区
-const Pricing = dynamic(() => import('./components/Pricing')); // 价格方案
-
-// 动态效果
-const BackgroundAnimation = dynamic(() => import('./components/BackgroundEffects').then(mod => mod.BackgroundAnimation), {
-  ssr: false,
-  loading: () => <div className="animate-pulse bg-gray-200 h-screen" />,
-});
-const FloatingElements = dynamic(() => import('./components/BackgroundEffects').then(mod => mod.FloatingElements), { ssr: false });
-
-// 工具组件
-const Divider = dynamic(() => import('./components/Divider')); // 默认样式在组件内定义
+const BackgroundAnimation = dynamic(
+  () => import('./components/BackgroundEffects').then((mod) => mod.BackgroundAnimation),
+  { ssr: false, loading: () => <div className="animate-pulse bg-gray-200 h-screen" /> }
+);
+const FloatingElements = dynamic(
+  () => import('./components/BackgroundEffects').then((mod) => mod.FloatingElements),
+  { ssr: false }
+);
 
 export default function Home() {
-  const mainRef = useRef<HTMLElement>(null);
+  const [currentSection, setCurrentSection] = useState<'hero' | 'features' | 'download' | 'pricing'>('hero');
+
+  // 根据当前状态渲染对应组件
+  const renderSection = () => {
+    switch (currentSection) {
+      case 'hero':
+        return <Hero />;
+      case 'features':
+        return <Features />;
+      case 'download':
+        return <Download />;
+      case 'pricing':
+        return <Pricing />;
+      default:
+        return <Hero />;
+    }
+  };
 
   return (
     <>
-      <Head>
-        <title>EMMUi - Your Next UI Solution</title>
-        <meta name="description" content="Explore EMMUi's features, pricing, and download options." />
-      </Head>
-      <Header />
-      <main ref={mainRef} role="main" className="relative">
+      <Header setCurrentSection={setCurrentSection} currentSection={currentSection} />
+      <main className="relative min-h-screen">
         <BackgroundAnimation />
         <FloatingElements />
-        <Hero />
-        <Divider />
-        <Features />
-        <Divider />
-        <Download />
-        <Divider />
-        <Pricing />
-        <Divider />
+        {renderSection()}
       </main>
       <Footer />
     </>
