@@ -5,25 +5,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
-const menuItems = [
-  { 
-    name: '功能特性', 
-    icon: 'carbon:chart-relationship',
-    section: 'features'
-  },
-  { 
-    name: '客户端', 
-    icon: 'carbon:laptop',
-    section: 'download'
-  },
-  { 
-    name: '价格方案', 
-    icon: 'carbon:currency-dollar',
-    section: 'pricing'
-  },
+interface MenuItem {
+  name: string;
+  icon: string;
+  section: string;
+}
+
+interface AuthItem {
+  name: string;
+  icon: string;
+  href: string;
+}
+
+const menuItems: MenuItem[] = [
+  { name: '功能特性', icon: 'carbon:chart-relationship', section: 'features' },
+  { name: '客户端', icon: 'carbon:laptop', section: 'download' },
+  { name: '价格方案', icon: 'carbon:currency-dollar', section: 'pricing' },
 ];
 
-const authItems = [
+const authItems: AuthItem[] = [
   { name: '登录', icon: 'carbon:login', href: '/login' },
   { name: '注册', icon: 'carbon:user', href: '/register' },
 ];
@@ -33,10 +33,7 @@ const menuVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.5,
-    },
+    transition: { delay: i * 0.1, duration: 0.5 },
   }),
 };
 
@@ -45,53 +42,60 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
-  // 平滑滚动到指定区域
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
     }
     setIsMobileMenuOpen(false);
   };
 
-  // 节流滚动监听
   useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 10);
-
-          const sections = menuItems.map(item => item.section);
-          const current = sections.find(section => {
-            const element = document.getElementById(section);
-            if (element) {
-              const rect = element.getBoundingClientRect();
-              return rect.top <= 100 && rect.bottom >= 100;
-            }
-            return false;
-          });
-
-          if (current) setActiveSection(current);
-          ticking = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
         });
-        ticking = true;
-      }
-    };
+      },
+      { rootMargin: '-100px 0px' }
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    menuItems.forEach((item) => {
+      const section = document.getElementById(item.section);
+      if (section) observer.observe(section);
+    });
+
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  const NavItem = ({ name, icon, href, section, isActive, onClick, custom }: any) => (
+    <motion.div custom={custom} variants={menuVariants} initial="hidden" animate="visible">
+      {href ? (
+        <Link href={href} passHref>
+          <button className="group nav-item">
+            <Icon icon={icon} className="nav-icon" />
+            <span>{name}</span>
+          </button>
+        </Link>
+      ) : (
+        <button
+          onClick={() => onClick?.()}
+          className={`group nav-item ${isActive ? 'text-primary-400' : ''}`}
+        >
+          <Icon icon={icon} className={`nav-icon ${isActive ? 'scale-110' : ''}`} />
+          <span>{name}</span>
+        </button>
+      )}
+    </motion.div>
+  );
 
   return (
     <>
@@ -105,80 +109,42 @@ export default function Header() {
       >
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo 和导航项 */}
             <div className="flex items-center space-x-8">
               <Link href="/" className="flex items-center space-x-2">
-                <motion.div
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
-                >
+                <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }}>
                   <Icon icon="logos:meta-icon" className="w-8 h-8 text-primary-400" />
                 </motion.div>
                 <span className="text-xl font-bold text-foreground-100">Aero Isle</span>
               </Link>
-
-              {/* 桌面端导航项 */}
               <div className="hidden md:flex items-center space-x-8">
                 {menuItems.map((item, i) => (
-                  <motion.div
+                  <NavItem
                     key={item.name}
                     custom={i}
-                    variants={menuVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <button
-                      aria-label={`跳转到${item.name}`}
-                      onClick={() => scrollToSection(item.section)}
-                      className={`group flex items-center space-x-2 transition-all duration-300 ${
-                        activeSection === item.section
-                          ? 'text-primary-400'
-                          : 'text-foreground-300 hover:text-primary-400'
-                      }`}
-                    >
-                      <Icon
-                        icon={item.icon}
-                        className={`w-5 h-5 transition-transform duration-300 ${
-                          activeSection === item.section ? 'scale-110' : 'group-hover:scale-110'
-                        }`}
-                      />
-                      <span>{item.name}</span>
-                    </button>
-                  </motion.div>
+                    name={item.name}
+                    icon={item.icon}
+                    section={item.section}
+                    isActive={activeSection === item.section}
+                    onClick={() => scrollToSection(item.section)}
+                  />
                 ))}
               </div>
             </div>
-
-            {/* 桌面端登录/注册按钮 */}
             <div className="hidden md:flex items-center space-x-8">
               {authItems.map((item, i) => (
-                <motion.div
+                <NavItem
                   key={item.name}
                   custom={i + menuItems.length}
-                  variants={menuVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <Link href={item.href}>
-                    <button
-                      aria-label={item.name}
-                      className="group flex items-center space-x-2 transition-all duration-300 text-foreground-300 hover:text-primary-400"
-                    >
-                      <Icon
-                        icon={item.icon}
-                        className="w-5 h-5 transition-transform duration-300 group-hover:scale-110"
-                      />
-                      <span>{item.name}</span>
-                    </button>
-                  </Link>
-                </motion.div>
+                  name={item.name}
+                  icon={item.icon}
+                  href={item.href}
+                />
               ))}
             </div>
           </div>
         </nav>
       </motion.header>
 
-      {/* 移动端悬浮按钮和菜单容器 */}
       <div className="fixed bottom-6 right-6 md:hidden z-[60] flex flex-col items-end space-y-4">
         <AnimatePresence>
           {isMobileMenuOpen && (
@@ -193,8 +159,8 @@ export default function Header() {
                 {menuItems.map((item, i) => (
                   <motion.div
                     key={item.name}
-                    variants={menuVariants}
                     custom={i}
+                    variants={menuVariants}
                     initial="hidden"
                     animate="visible"
                   >
@@ -207,39 +173,29 @@ export default function Header() {
                       }`}
                     >
                       <Icon icon={item.icon} className="w-5 h-5" />
-                      <span>{item.name}</span>
+                      <span>{name}</span>
                     </button>
                   </motion.div>
                 ))}
-
-                {/* 移动端登录/注册按钮 */}
                 {authItems.map((item, i) => (
-                  <motion.div
+                  <NavItem
                     key={item.name}
-                    variants={menuVariants}
                     custom={i + menuItems.length}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <Link href={item.href}>
-                      <button
-                        className="flex items-center gap-3 w-full p-3 rounded-xl transition-all duration-300 hover:bg-white/5 text-foreground-300 hover:text-primary-400"
-                      >
-                        <Icon icon={item.icon} className="w-5 h-5" />
-                        <span>{item.name}</span>
-                      </button>
-                    </Link>
-                  </motion.div>
+                    name={item.name}
+                    icon={item.icon}
+                    href={item.href}
+                  />
                 ))}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? '关闭菜单' : '打开菜单'}
+          aria-expanded={isMobileMenuOpen}
           className="w-12 h-12 rounded-full backdrop-blur-sm border border-white/10 shadow-lg flex items-center justify-center bg-background-800/80"
         >
           <Icon
