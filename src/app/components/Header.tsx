@@ -114,7 +114,7 @@ export default function Header() {
                 >
                   <Icon icon="logos:meta-icon" className="w-8 h-8 text-primary-400" />
                 </motion.div>
-                <span className="text-xl font-bold text-foreground-100">Meta EMMUi</span>
+                <span className="text-xl font-bold text-foreground-100">Aero Isle</span>
               </Link>
 
               {/* 桌面端导航项 */}
