@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
+const LOGO_ICON = 'logos:meta-icon';
+const PROJECT_NAME = 'AeroIsle';
+
 interface MenuItem {
   name: string;
   icon: string;
@@ -95,9 +98,9 @@ export default function Header({ setCurrentSection, currentSection }: HeaderProp
             <div className="flex items-center space-x-8">
               <Link href="/" className="flex items-center space-x-2">
                 <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }}>
-                  <Icon icon="logos:meta-icon" className="w-8 h-8 text-primary-400" />
+                  <Icon icon={LOGO_ICON} className="w-8 h-8 text-primary-400" />
                 </motion.div>
-                <span className="text-xl font-bold text-foreground-100">Aero Isle</span>
+                <span className="text-xl font-bold text-foreground-100">{PROJECT_NAME}</span>
               </Link>
               <div className="hidden md:flex items-center space-x-8">
                 {menuItems.map((item, i) => (
