@@ -8,7 +8,7 @@ import { Icon } from '@iconify/react';
 interface MenuItem {
   name: string;
   icon: string;
-  section: 'hero' | 'features' | 'download' | 'pricing' | 'faqs'; // 添加 'faqs'
+  section: 'hero' | 'features' | 'download' | 'pricing' | 'faqs';
 }
 
 interface AuthItem {
@@ -22,7 +22,7 @@ const menuItems: MenuItem[] = [
   { name: '功能特性', icon: 'carbon:chart-relationship', section: 'features' },
   { name: '客户端', icon: 'carbon:laptop', section: 'download' },
   { name: '价格方案', icon: 'carbon:currency-dollar', section: 'pricing' },
-  { name: '常见问题', icon: 'carbon:help', section: 'faqs' }, // 新增 FAQ 导航项
+  { name: '常见问题', icon: 'carbon:help', section: 'faqs' },
 ];
 
 const authItems: AuthItem[] = [
@@ -40,15 +40,14 @@ const menuVariants = {
 };
 
 interface HeaderProps {
-  setCurrentSection: (section: 'hero' | 'features' | 'download' | 'pricing' | 'faqs') => void; // 添加 'faqs'
-  currentSection: 'hero' | 'features' | 'download' | 'pricing' | 'faqs'; // 添加 'faqs'
+  setCurrentSection: (section: 'hero' | 'features' | 'download' | 'pricing' | 'faqs') => void;
+  currentSection: 'hero' | 'features' | 'download' | 'pricing' | 'faqs';
 }
 
-// 类型定义 NavItem 的 props
 interface NavItemProps {
   name: string;
   icon: string;
-  section: 'hero' | 'features' | 'download' | 'pricing' | 'faqs'; // 添加 'faqs'
+  section: 'hero' | 'features' | 'download' | 'pricing' | 'faqs';
   isActive: boolean;
   onClick: () => void;
   custom: number;
@@ -69,7 +68,7 @@ export default function Header({ setCurrentSection, currentSection }: HeaderProp
       <button
         onClick={() => {
           onClick();
-          setCurrentSection(section); // 使用 section 更新状态
+          setCurrentSection(section);
         }}
         className={`group flex items-center space-x-2 transition-all duration-300 ${
           isActive ? 'text-primary-400' : 'text-foreground-300 hover:text-primary-400'
