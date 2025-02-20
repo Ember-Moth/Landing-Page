@@ -43,6 +43,16 @@ interface HeaderProps {
   currentSection: 'hero' | 'features' | 'download' | 'pricing';
 }
 
+// 类型定义 NavItem 的 props
+interface NavItemProps {
+  name: string;
+  icon: string;
+  section: 'hero' | 'features' | 'download' | 'pricing';
+  isActive: boolean;
+  onClick: () => void;
+  custom: number;
+}
+
 export default function Header({ setCurrentSection, currentSection }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -53,10 +63,13 @@ export default function Header({ setCurrentSection, currentSection }: HeaderProp
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const NavItem = ({ name, icon, section, isActive, onClick, custom }: any) => (
+  const NavItem = ({ name, icon, section, isActive, onClick, custom }: NavItemProps) => (
     <motion.div custom={custom} variants={menuVariants} initial="hidden" animate="visible">
       <button
-        onClick={() => onClick?.()}
+        onClick={() => {
+          onClick();
+          setCurrentSection(section); // 使用 section 更新状态
+        }}
         className={`group flex items-center space-x-2 transition-all duration-300 ${
           isActive ? 'text-primary-400' : 'text-foreground-300 hover:text-primary-400'
         }`}
