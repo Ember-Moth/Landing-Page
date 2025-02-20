@@ -7,6 +7,7 @@ import Hero from './components/Hero';
 import Features from './components/Features';
 import Download from './components/Download';
 import Pricing from './components/Pricing';
+import FAQs from './components/FAQs'; // 新增导入
 import Footer from './components/Footer';
 import dynamic from 'next/dynamic';
 
@@ -19,7 +20,7 @@ const FloatingElements = dynamic(
   { ssr: false }
 );
 
-type SectionType = 'hero' | 'features' | 'download' | 'pricing';
+type SectionType = 'hero' | 'features' | 'download' | 'pricing' | 'faqs'; // 添加 'faqs'
 
 export default function Home() {
   const [currentSection, setCurrentSection] = useState<SectionType>('hero');
@@ -35,6 +36,8 @@ export default function Home() {
         return <Download />;
       case 'pricing':
         return <Pricing />;
+      case 'faqs': // 新增 faqs 情况
+        return <FAQs />;
       default:
         return <Hero />;
     }
