@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -18,10 +20,35 @@ const FloatingElements = dynamic(
   { ssr: false }
 );
 
-export default function Home() {
-  const [currentSection, setCurrentSection] = useState<'hero' | 'features' | 'download' | 'pricing'>('hero');
+const sections = {
+  '': 'hero',
+  features: 'features',
+  download: 'download',
+  pricing: 'pricing',
+} as const;
 
-  // 根据当前状态渲染对应组件
+type SectionType = 'hero' | 'features' | 'download' | 'pricing';
+
+export default function Home() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [currentSection, setCurrentSection] = useState<SectionType>('hero');
+
+  // 根据 URL 初始化和同步 currentSection
+  useEffect(() => {
+    const path = pathname === '/' ? '' : pathname.replace('/', '');
+    const section = sections[path as keyof typeof sections] || 'hero';
+    setCurrentSection(section);
+  }, [pathname]);
+
+  // 处理导航切换并更新 URL
+  const handleSectionChange = (section: SectionType) => {
+    setCurrentSection(section);
+    const path = section === 'hero' ? '/' : `/${section}`;
+    router.push(path, { scroll: false }); // 不触发滚动
+  };
+
+  // 渲染当前组件
   const renderSection = () => {
     switch (currentSection) {
       case 'hero':
@@ -39,11 +66,21 @@ export default function Home() {
 
   return (
     <>
-      <Header setCurrentSection={setCurrentSection} currentSection={currentSection} />
+      <Header setCurrentSection={handleSectionChange} currentSection={currentSection} />
       <main className="relative min-h-screen">
         <BackgroundAnimation />
         <FloatingElements />
-        {renderSection()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSection}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          >
+            {renderSection()}
+          </motion.div>
+        </AnimatePresence>
       </main>
       <Footer />
     </>
