@@ -1,3 +1,7 @@
+'use client';
+
+import { Icon } from '@iconify/react'; // 添加 Icon 导入
+
 export default function Platforms() {
   const platforms = [
     { icon: 'simple-icons:windows', name: 'Windows' },
