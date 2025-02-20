@@ -2,9 +2,9 @@
 
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
-import Header from './components/Header'; // 假设组件文件在同一目录
-import Platforms from './components/Platforms';
-import Footer from './components/Footer';
+import Header from './Head'; // 假设组件文件在同一目录
+import Platforms from './Platforms';
+import Footer from './Footer';
 
 // 功能图标
 const featureIcons = {
