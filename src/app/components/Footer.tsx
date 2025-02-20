@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
         {/* 版权和公司信息 */}
         <div className="text-sm text-center md:text-left">
-          <p>© 2025 Surfshark 保留所有权利。</p>
+          <p>© 2025 AeroIsle 保留所有权利。</p>
           <p className="mt-1">
             Surfshark B.V., KVK number: 81967985, 地址：Kabelweg 57, 1014BA Amsterdam, the Netherlands, VAT #: NL862287339B01
           </p>
