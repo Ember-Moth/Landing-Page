@@ -11,7 +11,7 @@ const CONTACTS = [
   { name: 'Email', icon: 'carbon:email', url: 'mailto:support@aeroisle.com' },
   { name: 'Telegram', icon: 'logos:telegram', url: 'https://t.me/yourtelegram' },
   { name: 'Twitter', icon: 'logos:twitter', url: 'https://twitter.com/yourtwitter' },
-  { name: 'GitHub', icon: 'logos:github-icon', url: 'https://github.com/yourgithub' },
+  { name: 'GitHub', icon: 'mdi:github', url: 'https://github.com/yourgithub' },
 ];
 
 export default function Footer() {
@@ -31,7 +31,11 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-[#D9D9D9] hover:text-primary-400 transition-colors duration-300"
+                className={`transition-colors duration-300 ${
+                  contact.name === 'GitHub'
+                    ? 'text-white hover:text-primary-400' // GitHub 图标颜色修改
+                    : 'text-[#D9D9D9] hover:text-primary-400'
+                }`}
                 aria-label={contact.name}
               >
                 <Icon icon={contact.icon} className="w-6 h-6" />
