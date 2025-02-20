@@ -86,30 +86,6 @@ const pricingData = {
   },
 };
 
-// 底部特性展示
-const bottomFeatures = [
-  {
-    icon: 'carbon:security',
-    title: '安全支付',
-    description: '支持支付宝、微信、Visa等多种安全支付方式',
-  },
-  {
-    icon: 'carbon:chat',
-    title: '7×24小时支持',
-    description: '专业客服团队全天候为您服务',
-  },
-  {
-    icon: 'carbon:currency',
-    title: '7天退款保证',
-    description: '如果不满意，7天内可无理由全额退款',
-  },
-  {
-    icon: 'carbon:shield',
-    title: '隐私保护',
-    description: '严格遵守隐私政策，保护您的数据安全',
-  },
-];
-
 // 热门功能标签
 const hotFeatures = {
   basic: ['智能分流', '高速访问'],
@@ -421,58 +397,6 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* 额外信息 */}
-        <div className="mt-16 text-center relative">
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-accent-500/5 to-primary-500/5 blur-3xl" />
-          </div>
-
-          <div className="bg-background-800/50 backdrop-blur-sm rounded-2xl p-8 max-w-3xl mx-auto border border-white/5 hover:border-primary-500/10 transition-all duration-300">
-            <div className="flex justify-center mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-accent-500/20 blur-xl rounded-full" />
-                <div className="relative w-16 h-16 rounded-full bg-background-700/50 flex items-center justify-center">
-                  <Icon 
-                    icon="carbon:badge" 
-                    className="w-8 h-8 text-primary-400 animate-pulse" 
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-xl font-medium bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400">
-                7天无理由退款保证
-              </h4>
-              <p className="text-foreground-400">
-                所有方案均支持7天无理由退款，可以放心体验
-              </p>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {bottomFeatures.map((feature, index) => (
-                <div 
-                  key={index}
-                  className="group flex flex-col items-center gap-4 p-6 rounded-xl bg-background-700/50 backdrop-blur-sm border border-white/5 hover:border-primary-500/20 transition-all duration-300"
-                >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500/10 to-accent-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Icon 
-                      icon={feature.icon} 
-                      className="w-6 h-6 text-primary-400 group-hover:text-accent-400 transition-colors duration-300" 
-                    />
-                  </div>
-                  <h4 className="text-lg font-medium text-foreground-200 group-hover:text-primary-400 transition-colors duration-300">
-                    {feature.title}
-                  </h4>
-                  <p className="text-sm text-foreground-400 text-center group-hover:text-foreground-300 transition-colors duration-300">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* 常见问题 */}
         <div className="mt-24 max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-center mb-12 bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400">
@@ -493,35 +417,6 @@ export default function Pricing() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* 联系方式 */}
-        <div className="mt-16 text-center">
-          <p className="text-foreground-400 mb-4">
-            需要更多信息？
-          </p>
-          <div className="flex justify-center gap-4">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background-800 hover:bg-background-700 transition-colors duration-300">
-              <Icon icon="carbon:email" className="w-5 h-5 text-primary-400" />
-              <span className="text-foreground-300">联系销售</span>
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background-800 hover:bg-background-700 transition-colors duration-300">
-              <Icon icon="carbon:phone" className="w-5 h-5 text-primary-400" />
-              <span className="text-foreground-300">在线咨询</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 信任标识 */}
-        <div className="mt-24 text-center">
-          <div className="flex justify-center items-center gap-8 opacity-50 hover:opacity-100 transition-opacity duration-300">
-            <Icon icon="carbon:security" className="w-8 h-8 text-primary-400" />
-            <Icon icon="carbon:certificate" className="w-8 h-8 text-primary-400" />
-            <Icon icon="carbon:password" className="w-8 h-8 text-primary-400" />
-          </div>
-          <p className="mt-4 text-sm text-foreground-500">
-            通过ISO27001安全认证 | 符合GDPR隐私标准 | 银行级加密保护
-          </p>
         </div>
       </div>
     </section>
