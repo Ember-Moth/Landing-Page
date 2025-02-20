@@ -199,7 +199,6 @@ export default function Pricing() {
       <div className="container mx-auto px-4">
         {/* 标题区域 */}
         <div className="text-center mb-16 relative">
-          {/* 背景装饰 */}
           <div className="absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-transparent to-accent-500/10 blur-3xl" />
           </div>
@@ -218,12 +217,10 @@ export default function Pricing() {
         {/* 计费周期切换 */}
         <div className="flex justify-center mb-16">
           <div className="relative p-1 bg-gradient-to-r from-primary-500/10 to-accent-500/10 rounded-2xl backdrop-blur-sm">
-            {/* 背景装饰 */}
             <div className="absolute inset-0 bg-background-800/80 rounded-2xl -z-10" />
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-transparent to-accent-500/20 rounded-2xl blur-xl -z-20" />
             
             <div className="relative flex items-center gap-2 p-1">
-              {/* 月付选项 */}
               <button
                 onClick={() => setBillingCycle('monthly')}
                 className={`relative group flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300
@@ -246,7 +243,6 @@ export default function Pricing() {
                 </div>
               </button>
 
-              {/* 年付选项 */}
               <button
                 onClick={() => setBillingCycle('yearly')}
                 className={`relative group flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300
@@ -267,7 +263,6 @@ export default function Pricing() {
                   <div className="text-sm font-medium">按年付费</div>
                   <div className="text-xs opacity-80">省20%</div>
                 </div>
-                {/* 优惠标签 */}
                 <div className="absolute -top-2 -right-2">
                   <div className="relative">
                     <div className="absolute inset-0 bg-accent-500 blur-sm rounded-full" />
@@ -287,12 +282,11 @@ export default function Pricing() {
             <div
               key={plan}
               className={`relative group rounded-2xl overflow-hidden transition-all duration-500
-                ${plan === 'pro' ? 'md:scale-105 md:-translate-y-4' : ''}
                 hover:shadow-2xl ${planColors[plan].hover}`}
               onMouseEnter={() => setHoveredPlan(plan)}
               onMouseLeave={() => setHoveredPlan(null)}
             >
-              {/* 促销标签  */}
+              {/* 促销标签 */}
               <div className="absolute top-4 right-4 z-20">
                 <div className={`bg-gradient-to-r ${planColors[plan].gradient} text-white text-sm font-medium py-1.5 px-4 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300`}>
                   {promotions[plan].tag}
@@ -300,7 +294,7 @@ export default function Pricing() {
                 </div>
               </div>
 
-              {/* 热门功能标签  */}
+              {/* 热门功能标签 */}
               <div className="absolute top-20 right-4 space-y-2 z-20">
                 {hotFeatures[plan].map((feature, index) => (
                   <div
@@ -328,7 +322,7 @@ export default function Pricing() {
               <div className={`absolute inset-0 border border-white/5 rounded-2xl ${planColors[plan].border} transition-colors duration-500`} />
 
               {/* 内容区域 */}
-              <div className="relative p-8 pt-16 space-y-6">
+              <div className="relative p-8 pt-16 space-y-6 min-h-[36rem]">
                 {/* 1. 标题和图标 */}
                 <div className="flex items-center gap-3">
                   <Icon
@@ -409,14 +403,10 @@ export default function Pricing() {
                   </div>
                 </div>
 
-                {/* 6. 按钮 */}
+                {/* 6. 按钮 - 统一样式 */}
                 <button
                   className={`w-full py-4 rounded-xl font-medium transition-all duration-300 relative overflow-hidden
-                    ${
-                      plan === 'pro'
-                        ? `bg-gradient-to-r ${planColors[plan].gradient} text-white ${planColors[plan].hover}`
-                        : `bg-background-700 text-foreground-200 hover:bg-background-600 ${planColors[plan].hover}`
-                    }`}
+                    bg-gradient-to-r ${planColors[plan].gradient} text-white ${planColors[plan].hover}`}
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     {plan === 'enterprise' ? '联系我们' : '立即开通'}
@@ -433,13 +423,11 @@ export default function Pricing() {
 
         {/* 额外信息 */}
         <div className="mt-16 text-center relative">
-          {/* 背景装饰 */}
           <div className="absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-accent-500/5 to-primary-500/5 blur-3xl" />
           </div>
 
           <div className="bg-background-800/50 backdrop-blur-sm rounded-2xl p-8 max-w-3xl mx-auto border border-white/5 hover:border-primary-500/10 transition-all duration-300">
-            {/* 退款保证标志 */}
             <div className="flex justify-center mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-accent-500/20 blur-xl rounded-full" />
@@ -452,7 +440,6 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* 退款说明 */}
             <div className="space-y-4">
               <h4 className="text-xl font-medium bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400">
                 7天无理由退款保证
@@ -462,7 +449,6 @@ export default function Pricing() {
               </p>
             </div>
 
-            {/* 服务保障列表 */}
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {bottomFeatures.map((feature, index) => (
                 <div 
@@ -487,7 +473,7 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* 在底部常见问题 */}
+        {/* 常见问题 */}
         <div className="mt-24 max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-center mb-12 bg-clip-text bg-gradient-to-r from-primary-400 to-accent-400">
             常见问题
@@ -540,4 +526,4 @@ export default function Pricing() {
       </div>
     </section>
   );
-} 
+}
