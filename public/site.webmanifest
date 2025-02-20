@@ -1,22 +1,22 @@
 {
-  "name": "Aero Isle",
-  "short_name": "AeroIsle",
-  "description": "EMMUi telegram频道 @aemmui",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#ffffff",
+  "name": "AeroIsle",  // 应用的全名，显示在桌面或启动时
+  "short_name": "AeroIsle",  // 应用的短名，适用于空间有限的地方，比如桌面快捷方式
+  "description": "AeroIsle 提供安全、快速的 VPN 和网络加速服务",  // 应用的描述，通常会在安装时展示给用户
+  "start_url": "/",  // 应用启动时的 URL，通常是你的主页
+  "display": "standalone",  // 显示模式，"standalone" 表示应用会像原生应用一样运行，去掉浏览器界面
+  "background_color": "#ffffff",  // 应用启动时的背景颜色
+  "theme_color": "#1a73e8",  // 浏览器工具栏的主题色，通常与你的品牌色匹配
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "/icons/android-chrome-192x192.png",  // 192x192 尺寸的图标路径
+      "sizes": "192x192",  // 图标尺寸
+      "type": "image/png"  // 图标类型
     },
     {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "/icons/android-chrome-512x512.png",  // 512x512 尺寸的图标路径
+      "sizes": "512x512",  // 图标尺寸
+      "type": "image/png",  // 图标类型
+      "purpose": "any maskable"  // 可遮罩的图标
     }
   ]
 }
