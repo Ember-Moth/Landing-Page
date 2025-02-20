@@ -23,7 +23,6 @@ const menuItems = [
   },
 ];
 
-// 导航菜单项动画
 const menuVariants = {
   hidden: { opacity: 0, y: -10 },
   visible: (i: number) => ({
@@ -45,7 +44,7 @@ export default function Header() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 80; // 头部导航的高度
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -59,23 +58,29 @@ export default function Header() {
     setIsMobileMenuOpen(false);
   };
 
-  // 监听滚动，高亮当前区域
+  // 节流滚动监听
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 10);
 
-      const sections = menuItems.map(item => item.section);
-      const current = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
+          const sections = menuItems.map(item => item.section);
+          const current = sections.find(section => {
+            const element = document.getElementById(section);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              return rect.top <= 100 && rect.bottom >= 100;
+            }
+            return false;
+          });
 
-      if (current) {
-        setActiveSection(current);
+          if (current) setActiveSection(current);
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -86,11 +91,7 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-background-900/80 backdrop-blur-lg shadow-lg'
-            : 'bg-transparent'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-background-900/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -101,16 +102,11 @@ export default function Header() {
             <Link href="/" className="flex items-center space-x-2">
               <motion.div
                 whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
-                <Icon 
-                  icon="logos:meta-icon" 
-                  className="w-8 h-8 text-primary-400" 
-                />
+                <Icon icon="logos:meta-icon" className="w-8 h-8 text-primary-400" />
               </motion.div>
-              <span className="text-xl font-bold text-foreground-100">
-                Meta EMMUi
-              </span>
+              <span className="text-xl font-bold text-foreground-100">Meta EMMUi</span>
             </Link>
 
             {/* 桌面端导航 */}
@@ -124,6 +120,7 @@ export default function Header() {
                   animate="visible"
                 >
                   <button
+                    aria-label={`跳转到${item.name}`}
                     onClick={() => scrollToSection(item.section)}
                     className={`group flex items-center space-x-2 transition-all duration-300 ${
                       activeSection === item.section
@@ -141,6 +138,16 @@ export default function Header() {
                   </button>
                 </motion.div>
               ))}
+
+              {/* 登录/注册按钮 */}
+              <div className="flex space-x-4">
+                <Link href="/login">
+                  <button className="text-sm text-primary-400 hover:text-primary-500">登录</button>
+                </Link>
+                <Link href="/register">
+                  <button className="text-sm text-primary-400 hover:text-primary-500">注册</button>
+                </Link>
+              </div>
             </div>
           </div>
         </nav>
@@ -148,7 +155,6 @@ export default function Header() {
 
       {/* 移动端悬浮按钮和菜单容器 */}
       <div className="fixed bottom-6 right-6 md:hidden z-[60] flex flex-col items-end space-y-4">
-        {/* 移动端菜单 */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -180,12 +186,21 @@ export default function Header() {
                     </button>
                   </motion.div>
                 ))}
+
+                {/* 登录/注册按钮 */}
+                <div className="mt-4 flex flex-col space-y-4">
+                  <Link href="/login">
+                    <button className="w-full py-2 text-primary-400 hover:text-primary-500">登录</button>
+                  </Link>
+                  <Link href="/register">
+                    <button className="w-full py-2 text-primary-400 hover:text-primary-500">注册</button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* 悬浮按钮 */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -200,4 +215,4 @@ export default function Header() {
       </div>
     </>
   );
-} 
+}
