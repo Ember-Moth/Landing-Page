@@ -1,8 +1,21 @@
 'use client';
 
-import { pricingFAQs } from './Pricing'; // 假设从 Pricing.tsx 导入数据
-
 export default function FAQs() {
+  const pricingFAQs = [
+    {
+      question: '如何选择合适的方案？',
+      answer: '根据您的使用场景和需求选择：个人用户建议基础版，企业用户建议专业版或企业版。',
+    },
+    {
+      question: '可以随时更换方案吗？',
+      answer: '是的，您可以随时升级或降级您的方案，费用会按比例计算。',
+    },
+    {
+      question: '支持哪些支付方式？',
+      answer: '支持支付宝、微信支付、Visa、Mastercard等主流支付方式。',
+    },
+  ];
+
   return (
     <section className="py-24 bg-background-900">
       <div className="max-w-4xl mx-auto px-4">
